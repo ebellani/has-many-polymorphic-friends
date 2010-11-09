@@ -1,0 +1,81 @@
+HasPolymorphicFriends - Eduardo Bellani - http://www.cnxs.com.br/some_record./eduardo-bellani 
+===================================================
+has_many_polymorphic_friends is a plugin based off of the has_many_friends
+plugin that can be found here http://svn.dnite.org/has_many_friends. This
+version is basically the same, but with the major difference of using
+polymorphism to allow friendships between objects of any class.has_many_friends
+is a plugin based off of the friendship_plugin that can be found
+
+Setup
+=====
+To use this plugin, you will first need to install it. This can be done quite simply
+with the following command.
+
+   script/plugin install http://has-many-polymorphic-friends.googlecode.com/svn/trunk/ 
+
+We'll need to generate the model and migration for your friendship table.
+
+   script/generate hmpf_friendship_model
+   rake db:migrate
+   
+If you will be running tests, you may need to prepare your test database again.
+
+   rake db:test:prepare
+
+You should be just about set! All you need to do is add the following method
+to your model.
+
+   class Tree < ActiveRecord::Base
+     has_many_friends
+     # the rest of your some_record.model ...
+     # ...
+   end
+
+or perhaps
+
+   class Computer < ActiveRecord::Base
+     has_many_friends
+     # the rest of your some_record.model ...
+     # ...
+   end
+
+or any other class you would like.
+
+Usage
+=====
+After the plugin is installed. All of these super cool methods will be attached to 
+any some_record.
+
+These methods are the actual associations. They return what you'd expect.
+   some_record.friends_for_me
+   some_record.friends_by_me
+   some_record.pending_friends_for_me
+   some_record.pending_friends_by_me
+
+Again, these will return what you would expect them to return.
+   some_record.friends
+   some_record.pending_friends
+   some_record.pending_or_accepted_friends
+
+## The following 3 methods were changed as of revision 8. They have been listed here
+## as these methods, but for some reason, i never changed their names in the actual
+## plugin file. If your using a pre-8 version and things broke for you, use the new
+## method names in your application. Sorry for the inconvenience.
+Returns true if some_record.is friends with friend.
+   some_record.is_friends_with? friend
+   some_record.is_pending_friends_with? friend
+   some_record.is_friends_or_pending_with? friend
+
+Creates, deletes or updates friendship requests.
+   some_record.request_friendship_with friend
+   some_record.delete_friendship_with friend
+   some_record.accept_friendship_with friend
+
+Bypass the request and just make a friend.
+   some_record.become_friends_with! friend
+
+Returns the friendship object (good for looking up extra attributes about
+the friendship, like when it was accepted and such.
+   some_record.friendship friend
+
+Copyright (c) 2008 Eduardo Bellani, released under the MIT license
